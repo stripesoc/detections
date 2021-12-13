@@ -1,0 +1,2 @@
+# detections
+KQL detection rules
