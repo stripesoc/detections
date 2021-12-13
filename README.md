@@ -3,4 +3,4 @@ KQL detection rules repo, recently created on the 13/12/21 in response to the L4
 
 Rules created by Stripe OLT SOC, this detection rule is based on early and currently available Open-Source reporting from various sources (L4J)
 
-Please read: GNU General Public License
+Please read: GNU General Public v3 License
