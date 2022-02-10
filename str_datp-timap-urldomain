@@ -1,0 +1,23 @@
+// Stripe SOC Team: domain-url TI Map
+// This DATP query is for use with networking events to detect a connection to a known malicious URL or domain.
+// Known caveats: If a proxy or VPN is in use it may mask domains/URL's and so it may be best to use CommonSecurityLog in Azure 
+// Sentinel SIEM for firewall/proxy logs. You can expand this query to make it more in depth or use more sources.
+// TLP: white
+// POC: ryan.pullen@stripeolt.com
+let urls_urlhaus = materialize (
+(externaldata(payload_url: string ) [@"https://urlhaus.abuse.ch/downloads/text_recent/"]
+with (format="txt"))
+| project payload_url
+| summarize by payload_url);
+let domains_botvrij = materialize (
+(externaldata(payload_domain: string ) [@"https://www.botvrij.eu/data/ioclist.domain.raw"]
+with (format="txt"))
+| project payload_domain
+| summarize by payload_domain);
+search in (DeviceNetworkEvents, DeviceFileEvents, DeviceEvents)
+Timestamp > ago(timeframe)
+| where RemoteUrl != "" or FileOriginUrl != ""
+| extend RemoteDomain = trim_start('http(s?)://', RemoteUrl)
+| extend RemoteDomain = trim_end('/.*?', RemoteDomain)
+| where (RemoteUrl in(urls_urlhaus) or FileOriginUrl in(urls_urlhaus) or (RemoteDomain in(domains_botvrij)))
+| project $table, Timestamp, DeviceName, RemoteUrl, FileOriginUrl, ActionType, ReportId
