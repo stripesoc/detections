@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/6d332014-7510-4bb0-84ea-9a60842932f5')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/6d332014-7510-4bb0-84ea-9a60842932f5')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2021-09-01-preview",
+            "properties": {
+                "displayName": "STRSOC - UKR HermeticWiper Malware Detection [Class-1]",
+                "description": "Issuer of Hermetica Digital LTD - reason for namijng of HermeticWiper - doesn't appear to be a legitimate company.",
+                "severity": "High",
+                "enabled": true,
+                "query": "//StripeSOC Team - Hermetic Wiper Class 1\n//Cert issuer belonging to the HermeticWiper cert (reason for HermeticWiper name is Hermetica)\n//Known caveats; attackers could change cert\nDeviceFileCertificateInfo\n| where Issuer contains \"Hermetica Digital LTD\"\n",
+                "queryFrequency": "PT10M",
+                "queryPeriod": "PT30M",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "DeviceName"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

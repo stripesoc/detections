@@ -1,0 +1,80 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/7ce7de8a-a4a5-48c0-ad8a-8c14d2a5bbbb')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/7ce7de8a-a4a5-48c0-ad8a-8c14d2a5bbbb')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2021-09-01-preview",
+            "properties": {
+                "displayName": "STRSOC - UKR HermeticWiper Malware Detection [Class-2]",
+                "description": "Detection of modification of registry key value of crashControl, prior to abused driver's execution starts, disabling crash dumps",
+                "severity": "High",
+                "enabled": true,
+                "query": "//StripeSOC Team - Hermetic Wiper Class 2\r\n//Registry keys edited by Hermetic Wiper in order to disable crashControl prior to startup of abused HermeticDriver\r\n//No known caveats as yet\r\nDeviceRegistryEvents\r\n| where (RegistryKey =~ \"SYSTEM\\\\CurrentControlSet\\\\Control\\\\CrashControl\" and (PreviousRegistryValueData =~ \"CrashDumpEnabled\" and RegistryValueData == 0))",
+                "queryFrequency": "PT10M",
+                "queryPeriod": "PT30M",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Account",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Name",
+                                "columnName": "InitiatingProcessAccountName"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "RegistryKey",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Key",
+                                "columnName": "RegistryKey"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "DeviceName"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
