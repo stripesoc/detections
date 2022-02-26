@@ -1,0 +1,204 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/a172e2f2-af15-4159-833f-695f06d7d4e4')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/a172e2f2-af15-4159-833f-695f06d7d4e4')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2021-09-01-preview",
+            "properties": {
+                "displayName": "STRSOC - UKR HermeticWiper Malware Detection [Class-3]",
+                "description": "HermeticWiper filehash/name detection [C3], HermeticWiper is being used in resurgent attacks against Ukraine",
+                "severity": "High",
+                "enabled": true,
+                "query": "//StripeSOC Team - Hermetic Wiper Class 3\r\n//Filehashes and Filenames known to belong to the abused HermeticWiper driver\r\n//No known caveats other than these attributes will likely be updated soon in the future\r\nDeviceFileEvents\r\n| where SHA256 in~ (\"e5f3ef69a534260e899a36cec459440dc572388defd8f1d98760d31c700f42d5\",\"96b77284744f8761c4f2558388e0aee2140618b484ff53fa8b222b340d2a9c84\",\"b01e0c6ac0b8bcde145ab7b68cf246deea9402fa7ea3aede7105f7051fe240c1\",\"8c614cf476f871274aa06153224e8f7354bf5e23e6853358591bf35a381fb75b\",\"b6f2e008967c5527337448d768f2332d14b92de22a1279fd4d91000bb3d4a0fd\",\"23ef301ddba39bb00f0819d2061c9c14d17dc30f780a945920a51bc3ba0198a4\",\"fd7eacc2f87aceac865b0aa97a50503d44b799f27737e009f91f3c281233c17d\",\"2c7732da3dcfc82f60f063f2ec9fa09f9d38d5cfbe80c850ded44de43bdb666d\") or (FileName in~ (\"DRV_X64\",\"DRV_X86\",\"DRV_XP_X64\",\"DRV_XP_X86\"))\r\n| extend HashAlgorithm = tostring(iff(isnotempty(SHA256), \"SHA256\", ''))",
+                "queryFrequency": "PT10M",
+                "queryPeriod": "PT30M",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Account",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Name",
+                                "columnName": "InitiatingProcessAccountName"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "FileHash",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Algorithm",
+                                "columnName": "HashAlgorithm"
+                            },
+                            {
+                                "identifier": "Value",
+                                "columnName": "SHA256"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "DeviceName"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/7ce7de8a-a4a5-48c0-ad8a-8c14d2a5bbbb')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/7ce7de8a-a4a5-48c0-ad8a-8c14d2a5bbbb')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2021-09-01-preview",
+            "properties": {
+                "displayName": "STRSOC - UKR HermeticWiper Malware Detection [Class-2]",
+                "description": "Detection of modification of registry key value of crashControl, prior to abused driver's execution starts, disabling crash dumps",
+                "severity": "High",
+                "enabled": true,
+                "query": "//StripeSOC Team - Hermetic Wiper Class 2\r\n//Registry keys edited by Hermetic Wiper in order to disable crashControl prior to startup of abused HermeticDriver\r\n//No known caveats as yet\r\nDeviceRegistryEvents\r\n| where (RegistryKey =~ \"SYSTEM\\\\CurrentControlSet\\\\Control\\\\CrashControl\" and (PreviousRegistryValueData =~ \"CrashDumpEnabled\" and RegistryValueData == 0))",
+                "queryFrequency": "PT10M",
+                "queryPeriod": "PT30M",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Account",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Name",
+                                "columnName": "InitiatingProcessAccountName"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "RegistryKey",
+                        "fieldMappings": [
+                            {
+                                "identifier": "Key",
+                                "columnName": "RegistryKey"
+                            }
+                        ]
+                    },
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "DeviceName"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/6d332014-7510-4bb0-84ea-9a60842932f5')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/6d332014-7510-4bb0-84ea-9a60842932f5')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2021-09-01-preview",
+            "properties": {
+                "displayName": "STRSOC - UKR HermeticWiper Malware Detection [Class-1]",
+                "description": "Issuer of Hermetica Digital LTD - reason for namijng of HermeticWiper - doesn't appear to be a legitimate company.",
+                "severity": "High",
+                "enabled": true,
+                "query": "//StripeSOC Team - Hermetic Wiper Class 1\n//Cert issuer belonging to the HermeticWiper cert (reason for HermeticWiper name is Hermetica)\n//Known caveats; attackers could change cert\nDeviceFileCertificateInfo\n| where Issuer contains \"Hermetica Digital LTD\"\n",
+                "queryFrequency": "PT10M",
+                "queryPeriod": "PT30M",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": false,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": [
+                    {
+                        "entityType": "Host",
+                        "fieldMappings": [
+                            {
+                                "identifier": "HostName",
+                                "columnName": "DeviceName"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
