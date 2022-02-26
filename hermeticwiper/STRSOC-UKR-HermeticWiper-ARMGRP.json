@@ -157,7 +157,7 @@
             "apiVersion": "2021-09-01-preview",
             "properties": {
                 "displayName": "STRSOC - UKR HermeticWiper Malware Detection [Class-1]",
-                "description": "Issuer of Hermetica Digital LTD - reason for namijng of HermeticWiper - doesn't appear to be a legitimate company.",
+                "description": "Issuer of Hermetica Digital LTD - reason for naming of HermeticWiper - doesn't appear to be a legitimate company.",
                 "severity": "High",
                 "enabled": true,
                 "query": "//StripeSOC Team - Hermetic Wiper Class 1\n//Cert issuer belonging to the HermeticWiper cert (reason for HermeticWiper name is Hermetica)\n//Known caveats; attackers could change cert\nDeviceFileCertificateInfo\n| where Issuer contains \"Hermetica Digital LTD\"\n",
