@@ -5,4 +5,6 @@ The file named 'STRSOC-UKR-HermeticWiper-ARMGRP.json' is a group of all of these
 
 Should you wish to pick and choose amongst the rules there are 3 seperate rules sorted by class (CL1-3). 
 
+The license of this directory is the same as the parent directory, GPL. 
+
 StripeSOC Team
