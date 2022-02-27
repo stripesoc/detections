@@ -1,5 +1,5 @@
 # StripeSOC - Hermetic Wiper Malware Detection Rules
-These detection rules are shared in ARM format, this means that you can take them and head to 
+These detection rules are shared in ARM format, this means that you can download and directly import them without the fuss of using the raw kusto
 
 ## Go to Azure Sentinel -> Analytics -> Import and select the ARM template e.g. 'STRSOC-UKR-HermeticWiper-ARMGRP.json' from your downloads
 
