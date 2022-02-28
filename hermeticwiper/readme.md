@@ -10,7 +10,7 @@ Should you wish to pick and choose amongst the rules there are 3 seperate rules 
 Currently awaiting R&D on Class-4 which is a detection for commandline arguments.
 
 ## Update
-Added raw-kql files in case you were not into the idea of uploading directly to Sentinel and/or wanted to translate to another platform.
+Added raw-kql files (suffixed -KQL) in case you were not into the idea of uploading directly to Sentinel and/or wanted to translate to another platform.
 
 The license of this directory is the same as the parent directory, GPL. 
 
