@@ -1,0 +1,5 @@
+//StripeSOC Team - Hermetic Wiper Class 2
+//Registry keys edited by Hermetic Wiper in order to disable crashControl prior to startup of abused HermeticDriver
+//No known caveats as yet
+DeviceRegistryEvents
+| where (RegistryKey =~ "SYSTEM\\CurrentControlSet\\Control\\CrashControl" and (PreviousRegistryValueData =~ "CrashDumpEnabled" and RegistryValueData == 0))

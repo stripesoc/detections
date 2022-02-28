@@ -1,0 +1,5 @@
+//StripeSOC Team - Hermetic Wiper Class 1
+//Cert issuer belonging to the HermeticWiper cert (reason for HermeticWiper name is Hermetica)
+//Known caveats; attackers could change cert
+DeviceFileCertificateInfo
+| where Issuer contains "Hermetica Digital LTD"
